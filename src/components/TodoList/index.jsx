@@ -3,15 +3,18 @@ import Todo from "../Todo";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { todosRemainingSelector } from "../../redux/selectors";
 
 export default function TodoList() {
   const [todoName, setTodoName] = useState("");
   const [priority, setPriority] = useState("Medium");
+  const inputRef = useRef();
 
+  // Lấy dữ liệu ra từ kho chung thông qua hook useSelector từ thư viện react-redux
   const todoList = useSelector(todosRemainingSelector);
 
+  // Dùng hàm dispatch để truyền đi action
   const dispatch = useDispatch();
 
   const handleAddButtonClick = () => {
@@ -26,6 +29,7 @@ export default function TodoList() {
 
     setTodoName("");
     setPriority("Medium");
+    inputRef.current.focus();
   };
 
   const handleInputChange = (e) => {
@@ -51,7 +55,7 @@ export default function TodoList() {
       </Col>
       <Col span={24}>
         <Space.Compact style={{ display: "flex" }} compact>
-          <Input value={todoName} onChange={handleInputChange} />
+          <Input value={todoName} ref={inputRef} onChange={handleInputChange} />
           <Select
             defaultValue="Medium"
             value={priority}
