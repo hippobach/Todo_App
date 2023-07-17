@@ -1,11 +1,24 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Typography, Divider } from "antd";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import Filters from "./components/Filters";
+import { setupServer } from "./fakeApis";
+import { fetchTodos } from "./components/TodoList/todoSlice";
+
+if (process.env.NODE_ENV === "development") {
+  setupServer();
+}
 
 const { Title } = Typography;
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchTodos());
+  });
+
   return (
     <div
       style={{
